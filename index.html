@@ -81,6 +81,33 @@
                   placeholder="Your speech will appear here..." readonly></textarea>
     </div>
 
+    <!-- Upload Section -->
+<div class="mt-3">
+
+    <label class="form-label fw-semibold">
+        📁 Upload Audio / Video for Transcription
+    </label>
+
+    <input type="file" id="uploadFile" class="form-control"
+           accept="audio/*,video/*">
+
+    <!-- Loading / Progress Bar -->
+    <div class="progress mt-2" style="height: 22px; display:none;" id="uploadProgressWrapper">
+        <div class="progress-bar progress-bar-striped progress-bar-animated"
+             id="uploadProgress"
+             role="progressbar"
+             style="width: 0%">
+            Processing…
+        </div>
+    </div>
+
+    <small class="text-muted d-block mt-1">
+        Note: Best used on Desktop/Laptop. Large files may take time.
+    </small>
+
+</div>
+
+
     <button id="copyBtn" class="btn btn-outline-primary copy-btn">
         📋 Copy Text
     </button>
@@ -98,6 +125,9 @@ const startBtn = document.getElementById("startBtn");
 const stopBtn  = document.getElementById("stopBtn");
 const copyBtn  = document.getElementById("copyBtn");
 const resultBox = document.getElementById("result");
+const uploadInput = document.getElementById("uploadFile");
+const progressWrapper = document.getElementById("uploadProgressWrapper");
+const progressBar = document.getElementById("uploadProgress");
 
 let recognition;
 let finalTranscript = "";
@@ -153,6 +183,48 @@ copyBtn.addEventListener("click", () => {
     navigator.clipboard.writeText(resultBox.value);
     alert("Text copied");
 });
+
+/*
+ STEP 1 ONLY:
+ This is a placeholder to simulate upload/transcription flow.
+ Actual transcription (Whisper) will be added in STEP 2.
+*/
+uploadInput.addEventListener("change", () => {
+
+    if (!uploadInput.files.length) return;
+
+    // Reset textarea (same box used for live transcription)
+    resultBox.value = "";
+    finalTranscript = "";
+
+    // Show loading bar
+    progressWrapper.style.display = "block";
+    progressBar.style.width = "0%";
+    progressBar.textContent = "Preparing…";
+
+    // Fake progress simulation (UI only)
+    let progress = 0;
+    const fakeInterval = setInterval(() => {
+        progress += 10;
+        progressBar.style.width = progress + "%";
+        progressBar.textContent = "Transcribing…";
+
+        if (progress >= 100) {
+            clearInterval(fakeInterval);
+
+            // Hide progress bar
+            setTimeout(() => {
+                progressWrapper.style.display = "none";
+
+                // Placeholder result (will be replaced by Whisper output)
+                resultBox.value =
+                    "📝 Transcription will appear here after processing the uploaded file.\n\n" +
+                    "(Whisper integration comes in STEP 2)";
+
+            }, 500);
+        }
+    }, 300);
+});
 </script>
 
 
@@ -160,5 +232,4 @@ copyBtn.addEventListener("click", () => {
 
 </body>
 </html>
-
 
