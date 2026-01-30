@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Live Speech to Text</title>
+
+<!-- Bootstrap 5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+    body {
+        background-color: #f5f7fa;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .app-container {
+        max-width: 800px;
+        margin: 60px auto;
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+
+    .app-title {
+        text-align: center;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    .control-buttons {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .control-buttons button {
+        min-width: 120px;
+        margin: 0 8px;
+    }
+
+    textarea {
+        resize: none;
+        font-size: 15px;
+        line-height: 1.6;
+    }
+
+    .copy-btn {
+        float: right;
+        margin-top: 10px;
+    }
+
+    .note {
+        font-size: 13px;
+        color: #6c757d;
+        margin-top: 10px;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="app-container">
+
+    <div class="app-title">
+        <h4>🎤 Live Speech to Text</h4>
+        <small class="text-muted">Telugu + English (Code Mixed)</small>
+    </div>
+
+    <div class="control-buttons">
+        <button id="startBtn" class="btn btn-success">
+            🎙 Speak
+        </button>
+
+        <button id="stopBtn" class="btn btn-danger">
+            ⏹ Stop
+        </button>
+    </div>
+
+    <div class="mb-2">
+        <textarea id="result" class="form-control" rows="12"
+                  placeholder="Your speech will appear here..." readonly></textarea>
+    </div>
+
+    <button id="copyBtn" class="btn btn-outline-primary copy-btn">
+        📋 Copy Text
+    </button>
+
+    <div class="clearfix"></div>
+
+    <div class="note">
+        Tip: Use a good microphone and pause slightly between sentences for better accuracy.
+    </div>
+
+</div>
+
+<script>
+    const startBtn = document.getElementById("startBtn");
+    const stopBtn  = document.getElementById("stopBtn");
+    const copyBtn  = document.getElementById("copyBtn");
+    const resultBox = document.getElementById("result");
+
+    let recognition = null;
+    let finalTranscript = "";
+
+    startBtn.addEventListener("click", () => {
+
+        // MUST be inside user gesture (mobile rule)
+        const SpeechRecognition =
+            window.SpeechRecognition || window.webkitSpeechRecognition;
+
+        if (!SpeechRecognition) {
+            alert("Speech recognition not supported. Use Chrome.");
+            return;
+        }
+
+        finalTranscript = "";
+        resultBox.value = "";
+
+        recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = "te-IN"; // Telugu + English
+
+        recognition.onstart = () => {
+            console.log("🎤 Recognition started");
+        };
+
+        recognition.onresult = (event) => {
+            let interim = "";
+
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                const text = event.results[i][0].transcript;
+
+                if (event.results[i].isFinal) {
+                    finalTranscript += text + " ";
+                } else {
+                    interim += text;
+                }
+            }
+
+            resultBox.value = finalTranscript + interim;
+        };
+
+        recognition.onerror = (event) => {
+            console.error("Speech error:", event.error);
+            alert("Mic error: " + event.error);
+        };
+
+        recognition.onend = () => {
+            console.log("🛑 Recognition stopped");
+        };
+
+        // 🔥 This line MUST be last
+        recognition.start();
+    });
+
+    stopBtn.addEventListener("click", () => {
+        if (recognition) {
+            recognition.stop();
+        }
+    });
+
+    copyBtn.addEventListener("click", () => {
+        if (!resultBox.value.trim()) {
+            alert("Nothing to copy!");
+            return;
+        }
+
+        navigator.clipboard.writeText(resultBox.value)
+            .then(() => alert("Text copied"))
+            .catch(() => alert("Copy failed"));
+    });
+</script>
+
+
+
+</body>
+</html>
