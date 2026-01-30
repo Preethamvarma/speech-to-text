@@ -118,7 +118,7 @@ startBtn.addEventListener("click", () => {
     recognition = new SpeechRecognition();
     recognition.continuous = false;       // ANDROID RULE
     recognition.interimResults = false;    // 🔑 PREVENT DUPLICATES
-    recognition.lang = "en-IN";            // Stable (Telugu still works)
+    recognition.lang = "te-IN";            // Stable (Telugu still works)
 
     recognition.onresult = (event) => {
         const text = event.results[0][0].transcript;
@@ -160,4 +160,5 @@ copyBtn.addEventListener("click", () => {
 
 </body>
 </html>
+
 
