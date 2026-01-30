@@ -94,64 +94,85 @@
 </div>
 
 <script>
-const startBtn = document.getElementById("startBtn");
-const stopBtn  = document.getElementById("stopBtn");
-const copyBtn  = document.getElementById("copyBtn");
-const resultBox = document.getElementById("result");
+    const startBtn = document.getElementById("startBtn");
+    const stopBtn  = document.getElementById("stopBtn");
+    const copyBtn  = document.getElementById("copyBtn");
+    const resultBox = document.getElementById("result");
 
-let recognition = null;
-let finalTranscript = "";
+    let recognition = null;
+    let finalTranscript = "";
 
-startBtn.addEventListener("click", () => {
+    startBtn.addEventListener("click", () => {
 
-    const SpeechRecognition =
-        window.SpeechRecognition || window.webkitSpeechRecognition;
+        // MUST be inside user gesture (mobile rule)
+        const SpeechRecognition =
+            window.SpeechRecognition || window.webkitSpeechRecognition;
 
-    if (!SpeechRecognition) {
-        alert("Speech recognition not supported");
-        return;
-    }
-
-    recognition = new SpeechRecognition();
-    recognition.continuous = false;          // 🔑 MOBILE FIX
-    recognition.interimResults = false;       // 🔑 MOBILE FIX
-    recognition.lang = "en-IN";               // 🔑 MOBILE FIX
-
-    recognition.onstart = () => {
-        alert("🎤 Listening...");
-    };
-
-    recognition.onresult = (event) => {
-        let text = "";
-        for (let i = 0; i < event.results.length; i++) {
-            text += event.results[i][0].transcript;
+        if (!SpeechRecognition) {
+            alert("Speech recognition not supported. Use Chrome.");
+            return;
         }
-        finalTranscript += text + " ";
-        resultBox.value = finalTranscript;
-    };
 
-    recognition.onerror = (e) => {
-        alert("Error: " + e.error);
-    };
+        finalTranscript = "";
+        resultBox.value = "";
 
-    recognition.onend = () => {
-        alert("🛑 Recognition ended");
-    };
+        recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = "te-IN"; // Telugu + English
 
-    recognition.start();
-});
+        recognition.onstart = () => {
+            console.log("🎤 Recognition started");
+        };
 
-stopBtn.addEventListener("click", () => {
-    if (recognition) recognition.stop();
-});
+        recognition.onresult = (event) => {
+            let interim = "";
 
-copyBtn.addEventListener("click", () => {
-    navigator.clipboard.writeText(resultBox.value);
-});
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                const text = event.results[i][0].transcript;
+
+                if (event.results[i].isFinal) {
+                    finalTranscript += text + " ";
+                } else {
+                    interim += text;
+                }
+            }
+
+            resultBox.value = finalTranscript + interim;
+        };
+
+        recognition.onerror = (event) => {
+            console.error("Speech error:", event.error);
+            alert("Mic error: " + event.error);
+        };
+
+        recognition.onend = () => {
+            console.log("🛑 Recognition stopped");
+        };
+
+        // 🔥 This line MUST be last
+        recognition.start();
+    });
+
+    stopBtn.addEventListener("click", () => {
+        if (recognition) {
+            recognition.stop();
+        }
+    });
+
+    copyBtn.addEventListener("click", () => {
+        if (!resultBox.value.trim()) {
+            alert("Nothing to copy!");
+            return;
+        }
+
+        navigator.clipboard.writeText(resultBox.value)
+            .then(() => alert("Text copied"))
+            .catch(() => alert("Copy failed"));
+    });
 </script>
 
 
 
 </body>
 </html>
-
