@@ -635,12 +635,7 @@
       if (e.data && e.data.size > 0) audioChunks.push(e.data);
     };
 
-    // timeslice=1000ms → ondataavailable fires every 1 second, continuously
-    // filling audioChunks[] while recording. WITHOUT this argument,
-    // ondataavailable only fires when stop() is called — which is exactly
-    // why text was only appearing after pressing Stop. This one change
-    // makes transcription live during recording.
-    mediaRecorder.start(1000);
+    mediaRecorder.start();
 
     setButtons(true, false);
     startTimer();
