@@ -8,302 +8,103 @@
   <script src="https://js.puter.com/v2/"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg: #0e0f14;
-      --surface: #16181f;
-      --surface2: #1e2029;
-      --border: #2a2d3a;
-      --accent: #f0a500;
-      --accent2: #e05c2a;
-      --text: #e8e9f0;
-      --muted: #6b6f82;
-      --green: #3ecf8e;
-      --red: #e05c2a;
+      --bg: #0e0f14; --surface: #16181f; --surface2: #1e2029; --border: #2a2d3a;
+      --accent: #f0a500; --accent2: #e05c2a; --text: #e8e9f0; --muted: #6b6f82;
+      --green: #3ecf8e; --red: #e05c2a;
     }
-
     body {
-      background: var(--bg);
-      color: var(--text);
+      background: var(--bg); color: var(--text);
       font-family: 'Noto Sans', sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px 20px 60px;
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; padding: 40px 20px 60px;
     }
-
     body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
+      content: ''; position: fixed; inset: 0;
       background-image:
         linear-gradient(rgba(240,165,0,0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(240,165,0,0.03) 1px, transparent 1px);
-      background-size: 40px 40px;
-      pointer-events: none;
-      z-index: 0;
+      background-size: 40px 40px; pointer-events: none; z-index: 0;
     }
-
-    .container {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      max-width: 780px;
-      animation: fadeIn 0.5s ease;
-    }
-
+    .container { position: relative; z-index: 1; width: 100%; max-width: 780px; animation: fadeIn 0.5s ease; }
     header { margin-bottom: 40px; text-align: center; }
-
     .logo-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 6px 14px;
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 20px;
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 999px; padding: 6px 14px; font-size: 11px;
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px;
     }
-
-    .logo-dot {
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: var(--accent);
-      animation: pulse 2s infinite;
-    }
-
-    h1 {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(32px, 6vw, 52px);
-      font-weight: 800;
-      line-height: 1.05;
-      letter-spacing: -0.02em;
-    }
-
-    h1 span {
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
+    .logo-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
+    h1 { font-family: 'Syne', sans-serif; font-size: clamp(32px,6vw,52px); font-weight: 800; line-height: 1.05; letter-spacing: -0.02em; }
+    h1 span { background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .subtitle { margin-top: 10px; color: var(--muted); font-size: 14px; }
 
-    .recorder-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 32px;
-      margin-bottom: 20px;
-    }
+    .recorder-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 32px; margin-bottom: 20px; }
 
     .visualizer-wrap {
-      height: 64px;
-      background: var(--surface2);
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      overflow: hidden;
-      margin-bottom: 28px;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      height: 64px; background: var(--surface2); border-radius: 12px;
+      border: 1px solid var(--border); overflow: hidden; margin-bottom: 28px;
+      position: relative; display: flex; align-items: center; justify-content: center;
     }
-
     canvas#waveform { width: 100%; height: 100%; display: block; }
+    .visualizer-idle { position: absolute; color: var(--muted); font-size: 13px; letter-spacing: 0.05em; pointer-events: none; }
 
-    .visualizer-idle {
-      position: absolute;
-      color: var(--muted);
-      font-size: 13px;
-      letter-spacing: 0.05em;
-      pointer-events: none;
-    }
-
-    .timer-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 24px;
-    }
-
-    .timer {
-      font-family: 'Syne', sans-serif;
-      font-size: 36px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: var(--text);
-      transition: color 0.3s;
-    }
-
+    .timer-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+    .timer { font-family: 'Syne', sans-serif; font-size: 36px; font-weight: 700; letter-spacing: -0.02em; color: var(--text); transition: color 0.3s; }
     .timer.recording { color: var(--accent); }
 
-    .status-badge {
-      font-size: 12px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 5px 12px;
-      border-radius: 999px;
-      border: 1px solid;
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      transition: all 0.3s;
-    }
-
+    .status-badge { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 12px; border-radius: 999px; border: 1px solid; display: flex; align-items: center; gap: 7px; transition: all 0.3s; }
     .status-badge.idle         { border-color: var(--border); color: var(--muted); }
     .status-badge.rec          { border-color: var(--accent); color: var(--accent); }
     .status-badge.paused       { border-color: #a0a0c0; color: #a0a0c0; }
     .status-badge.transcribing { border-color: var(--green); color: var(--green); }
-
     .status-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
     .status-dot.blink { animation: pulse 1.2s infinite; }
 
     .chunk-bar-wrap { margin-bottom: 24px; }
-
-    .chunk-label {
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 7px;
-      display: flex;
-      justify-content: space-between;
-    }
-
+    .chunk-label { font-size: 12px; color: var(--muted); margin-bottom: 7px; display: flex; justify-content: space-between; }
     .chunk-bar-bg { height: 4px; border-radius: 99px; background: var(--surface2); overflow: hidden; }
-
-    .chunk-bar-fill {
-      height: 100%;
-      border-radius: 99px;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      width: 0%;
-      transition: width 0.4s linear;
-    }
+    .chunk-bar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--accent), var(--accent2)); width: 0%; transition: width 0.4s linear; }
 
     .btn-row { display: flex; gap: 12px; }
-
     .btn {
-      flex: 1;
-      padding: 14px 10px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      font-family: 'Syne', sans-serif;
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: all 0.18s;
-      background: var(--surface2);
-      color: var(--muted);
+      flex: 1; padding: 14px 10px; border-radius: 12px; border: 1px solid var(--border);
+      font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 0.04em;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: all 0.18s; background: var(--surface2); color: var(--muted);
     }
-
     .btn:disabled { opacity: 0.35; cursor: not-allowed; }
-
-    .btn-start {
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      border-color: transparent;
-      color: #0e0f14;
-      flex: 2;
-    }
+    .btn-start { background: linear-gradient(135deg, var(--accent), var(--accent2)); border-color: transparent; color: #0e0f14; flex: 2; }
     .btn-start:not(:disabled):hover { filter: brightness(1.12); transform: translateY(-1px); }
     .btn-pause:not(:disabled):hover { border-color: #a0a0c0; color: #e0e0f0; }
     .btn-stop:not(:disabled):hover  { border-color: var(--red); color: var(--red); }
 
-    .transcript-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      overflow: hidden;
-    }
-
-    .transcript-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 18px 24px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .transcript-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
+    .transcript-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; }
+    .transcript-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; border-bottom: 1px solid var(--border); }
+    .transcript-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
     .transcript-actions { display: flex; gap: 8px; }
-
     .icon-btn {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 7px 14px;
-      font-size: 12px;
-      font-family: 'Syne', sans-serif;
-      font-weight: 600;
-      color: var(--muted);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.18s;
-      letter-spacing: 0.04em;
+      background: var(--surface2); border: 1px solid var(--border); border-radius: 8px;
+      padding: 7px 14px; font-size: 12px; font-family: 'Syne', sans-serif; font-weight: 600;
+      color: var(--muted); cursor: pointer; display: flex; align-items: center; gap: 6px;
+      transition: all 0.18s; letter-spacing: 0.04em;
     }
-
     .icon-btn:hover  { border-color: var(--accent); color: var(--accent); }
     .icon-btn.copied { border-color: var(--green);  color: var(--green); }
 
     #transcript {
-      width: 100%;
-      min-height: 320px;
-      max-height: 420px;
-      background: transparent;
-      border: none;
-      outline: none;
-      color: var(--text);
-      font-family: 'Noto Sans', sans-serif;
-      font-size: 15px;
-      line-height: 1.75;
-      padding: 24px;
-      resize: vertical;
-      overflow-y: auto;
+      width: 100%; min-height: 320px; max-height: 420px;
+      background: transparent; border: none; outline: none;
+      color: var(--text); font-family: 'Noto Sans', sans-serif;
+      font-size: 15px; line-height: 1.75; padding: 24px; resize: vertical; overflow-y: auto;
     }
-
     #transcript::placeholder { color: var(--muted); }
 
-    .processing-row {
-      padding: 10px 24px;
-      border-top: 1px solid var(--border);
-      font-size: 12px;
-      color: var(--green);
-      display: none;
-      align-items: center;
-      gap: 8px;
-    }
-
+    .processing-row { padding: 10px 24px; border-top: 1px solid var(--border); font-size: 12px; color: var(--green); display: none; align-items: center; gap: 8px; }
     .processing-row.show { display: flex; }
-
-    .spin {
-      width: 12px; height: 12px;
-      border: 2px solid var(--green);
-      border-top-color: transparent;
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-      flex-shrink: 0;
-    }
+    .spin { width: 12px; height: 12px; border: 2px solid var(--green); border-top-color: transparent; border-radius: 50%; animation: spin 0.7s linear infinite; flex-shrink: 0; }
 
     footer { text-align: center; margin-top: 32px; font-size: 12px; color: var(--muted); }
-
     @keyframes pulse  { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
     @keyframes spin   { to { transform: rotate(360deg); } }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
@@ -311,11 +112,10 @@
 </head>
 <body>
 <div class="container">
-
   <header>
     <div class="logo-badge"><span class="logo-dot"></span>Powered by Puter.js · Whisper</div>
     <h1>Class <span>Transcriber</span></h1>
-    <p class="subtitle">Hindi · English · Hinglish &nbsp;—&nbsp; Up to 3 hours per session</p>
+    <p class="subtitle">Hindi · English · Hinglish &nbsp;—&nbsp; Language auto-detected per chunk</p>
   </header>
 
   <div class="recorder-card">
@@ -323,7 +123,6 @@
       <canvas id="waveform"></canvas>
       <span class="visualizer-idle" id="idleLabel">Microphone idle</span>
     </div>
-
     <div class="timer-row">
       <div class="timer" id="timer">00:00:00</div>
       <div class="status-badge idle" id="statusBadge">
@@ -331,7 +130,6 @@
         <span id="statusText">Idle</span>
       </div>
     </div>
-
     <div class="chunk-bar-wrap">
       <div class="chunk-label">
         <span>Chunk progress (1 min → transcribe)</span>
@@ -339,7 +137,6 @@
       </div>
       <div class="chunk-bar-bg"><div class="chunk-bar-fill" id="chunkBar"></div></div>
     </div>
-
     <div class="btn-row">
       <button class="btn btn-start" id="btnStart">▶ Start</button>
       <button class="btn btn-pause" id="btnPause" disabled>⏸ Pause</button>
@@ -355,307 +152,387 @@
         <button class="icon-btn" id="btnCopy">⎘ Copy</button>
       </div>
     </div>
-    <textarea id="transcript" placeholder="Transcript will appear here as you record...&#10;&#10;Mic audio is recorded in 1-minute chunks, converted to WAV, then sent to Whisper."></textarea>
+    <textarea id="transcript" placeholder="Transcript will appear here as you record...&#10;&#10;Each 1-minute chunk is sent to Whisper automatically. Language is auto-detected — Hindi, English, or mixed."></textarea>
     <div class="processing-row" id="processingRow">
       <span class="spin"></span>
-      <span id="processingTxt">Converting &amp; transcribing...</span>
+      <span id="processingTxt">Transcribing...</span>
     </div>
   </div>
 
-  <footer>All processing happens in your browser via Puter.js · No data stored</footer>
-
+  <footer>Runs entirely in your browser via Puter.js · No data stored · Deploy on GitHub Pages</footer>
 </div>
+
 <script>
-  // ── DOM ───────────────────────────────────────────────────────────────────
-  const btnStart      = document.getElementById('btnStart');
-  const btnPause      = document.getElementById('btnPause');
-  const btnStop       = document.getElementById('btnStop');
-  const btnCopy       = document.getElementById('btnCopy');
-  const btnClear      = document.getElementById('btnClear');
-  const timerEl       = document.getElementById('timer');
-  const statusBadge   = document.getElementById('statusBadge');
-  const statusDot     = document.getElementById('statusDot');
-  const statusText    = document.getElementById('statusText');
-  const chunkBar      = document.getElementById('chunkBar');
-  const chunkLabel    = document.getElementById('chunkLabel');
-  const transcript    = document.getElementById('transcript');
-  const processingRow = document.getElementById('processingRow');
-  const processingTxt = document.getElementById('processingTxt');
-  const idleLabel     = document.getElementById('idleLabel');
-  const canvas        = document.getElementById('waveform');
-  const ctx2d         = canvas.getContext('2d');
+// ── DOM refs ──────────────────────────────────────────────────────────────
+const btnStart      = document.getElementById('btnStart');
+const btnPause      = document.getElementById('btnPause');
+const btnStop       = document.getElementById('btnStop');
+const btnCopy       = document.getElementById('btnCopy');
+const btnClear      = document.getElementById('btnClear');
+const timerEl       = document.getElementById('timer');
+const statusBadge   = document.getElementById('statusBadge');
+const statusDot     = document.getElementById('statusDot');
+const statusText    = document.getElementById('statusText');
+const chunkBar      = document.getElementById('chunkBar');
+const chunkLabel    = document.getElementById('chunkLabel');
+const transcript    = document.getElementById('transcript');
+const processingRow = document.getElementById('processingRow');
+const processingTxt = document.getElementById('processingTxt');
+const idleLabel     = document.getElementById('idleLabel');
+const canvas        = document.getElementById('waveform');
+const ctx2d         = canvas.getContext('2d');
 
-  const CHUNK_MS = 60_000;
+// ── Config ────────────────────────────────────────────────────────────────
+const CHUNK_SECONDS  = 60;
+const BUFFER_SIZE    = 4096; // ScriptProcessor buffer
 
-  let state = 'idle', mediaRecorder = null, audioStream = null;
-  let audioCtx = null, analyser = null, animFrameId = null;
-  let chunks = [], totalSeconds = 0, chunkSeconds = 0;
-  let timerInterval = null, chunkInterval = null, pendingChunks = 0;
+// ── State ─────────────────────────────────────────────────────────────────
+let recording     = false;
+let paused        = false;
+let audioCtx      = null;
+let micSource     = null;
+let processor     = null;
+let analyserNode  = null;
+let audioStream   = null;
+let animFrameId   = null;
+let pcmSegments   = [];      // array of Float32Array, reset each chunk
+let nativeSR      = 44100;   // updated once audioCtx is created
+let totalSeconds  = 0;
+let chunkSeconds  = 0;
+let timerInterval = null;
+let pendingChunks = 0;
 
-  // ── Waveform ──────────────────────────────────────────────────────────────
-  function resizeCanvas() {
-    canvas.width  = canvas.offsetWidth  * devicePixelRatio;
-    canvas.height = canvas.offsetHeight * devicePixelRatio;
-    ctx2d.scale(devicePixelRatio, devicePixelRatio);
+// ── Waveform ──────────────────────────────────────────────────────────────
+function resizeCanvas() {
+  canvas.width  = canvas.offsetWidth  * devicePixelRatio;
+  canvas.height = canvas.offsetHeight * devicePixelRatio;
+  ctx2d.scale(devicePixelRatio, devicePixelRatio);
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+function drawIdle() {
+  const W = canvas.offsetWidth, H = canvas.offsetHeight;
+  ctx2d.clearRect(0, 0, W, H);
+  ctx2d.strokeStyle = '#2a2d3a'; ctx2d.lineWidth = 1.5;
+  ctx2d.beginPath(); ctx2d.moveTo(0, H/2); ctx2d.lineTo(W, H/2); ctx2d.stroke();
+}
+drawIdle();
+
+function drawWave() {
+  if (!analyserNode) return;
+  animFrameId = requestAnimationFrame(drawWave);
+  const buf = new Uint8Array(analyserNode.frequencyBinCount);
+  analyserNode.getByteTimeDomainData(buf);
+  const W = canvas.offsetWidth, H = canvas.offsetHeight;
+  ctx2d.clearRect(0, 0, W, H);
+  const g = ctx2d.createLinearGradient(0, 0, W, 0);
+  g.addColorStop(0, '#f0a500'); g.addColorStop(0.5, '#e05c2a'); g.addColorStop(1, '#f0a500');
+  ctx2d.lineWidth   = 2;
+  ctx2d.strokeStyle = paused ? '#6b6f82' : g;
+  ctx2d.beginPath();
+  const sw = W / buf.length; let x = 0;
+  for (let i = 0; i < buf.length; i++) {
+    const y = (buf[i] / 128) * H / 2;
+    i === 0 ? ctx2d.moveTo(x, y) : ctx2d.lineTo(x, y);
+    x += sw;
   }
-  resizeCanvas();
-  window.addEventListener('resize', resizeCanvas);
+  ctx2d.stroke();
+}
 
-  function drawIdle() {
-    const W = canvas.offsetWidth, H = canvas.offsetHeight;
-    ctx2d.clearRect(0, 0, W, H);
-    ctx2d.strokeStyle = '#2a2d3a'; ctx2d.lineWidth = 1.5;
-    ctx2d.beginPath(); ctx2d.moveTo(0, H/2); ctx2d.lineTo(W, H/2); ctx2d.stroke();
-  }
-  drawIdle();
+// ── Timer + chunk counter ─────────────────────────────────────────────────
+const fmt = s => [Math.floor(s/3600), Math.floor((s%3600)/60), s%60]
+  .map(n => String(n).padStart(2,'0')).join(':');
 
-  function drawWave() {
-    if (!analyser) return;
-    animFrameId = requestAnimationFrame(drawWave);
-    const buf = new Uint8Array(analyser.frequencyBinCount);
-    analyser.getByteTimeDomainData(buf);
-    const W = canvas.offsetWidth, H = canvas.offsetHeight;
-    ctx2d.clearRect(0, 0, W, H);
-    const g = ctx2d.createLinearGradient(0,0,W,0);
-    g.addColorStop(0,'#f0a500'); g.addColorStop(.5,'#e05c2a'); g.addColorStop(1,'#f0a500');
-    ctx2d.lineWidth = 2;
-    ctx2d.strokeStyle = state === 'paused' ? '#6b6f82' : g;
-    ctx2d.beginPath();
-    const sw = W / buf.length; let x = 0;
-    for (let i = 0; i < buf.length; i++) {
-      const y = (buf[i]/128)*H/2;
-      i===0 ? ctx2d.moveTo(x,y) : ctx2d.lineTo(x,y);
-      x += sw;
+function startTimers() {
+  timerInterval = setInterval(() => {
+    if (paused) return;
+    totalSeconds++;
+    chunkSeconds++;
+    timerEl.textContent       = fmt(totalSeconds);
+    chunkBar.style.width      = (chunkSeconds / CHUNK_SECONDS * 100) + '%';
+    chunkLabel.textContent    = `${chunkSeconds}s / ${CHUNK_SECONDS}s`;
+    if (chunkSeconds >= CHUNK_SECONDS) {
+      chunkSeconds = 0;
+      flushChunk();
     }
-    ctx2d.stroke();
+  }, 1000);
+}
+
+function stopTimers() {
+  clearInterval(timerInterval);
+  timerInterval = null;
+}
+
+// ── Status badge ──────────────────────────────────────────────────────────
+function setStatus(s) {
+  statusBadge.className = 'status-badge';
+  statusDot.className   = 'status-dot';
+  const map = {
+    recording:    ['rec',          'blink', 'Recording',    true ],
+    paused:       ['paused',       '',      'Paused',       false],
+    transcribing: ['transcribing', 'blink', 'Transcribing', false],
+    idle:         ['idle',         '',      'Idle',         false],
+  };
+  const [badge, dot, label, showRec] = map[s] || map.idle;
+  statusBadge.classList.add(badge);
+  if (dot) statusDot.classList.add(dot);
+  statusText.textContent = label;
+  timerEl.classList.toggle('recording', showRec);
+}
+
+// ── Build WAV from raw Float32 PCM samples ────────────────────────────────
+// We capture Float32 PCM directly via ScriptProcessorNode at the mic's native
+// sample rate. Whisper works best at 16 kHz, so we downsample before encoding.
+function downsampleTo16k(samples, fromRate) {
+  if (fromRate === 16000) return samples;
+  const ratio      = fromRate / 16000;
+  const outLength  = Math.floor(samples.length / ratio);
+  const out        = new Float32Array(outLength);
+  for (let i = 0; i < outLength; i++) {
+    // Simple linear interpolation downsample
+    const pos  = i * ratio;
+    const idx  = Math.floor(pos);
+    const frac = pos - idx;
+    const a    = samples[idx]   ?? 0;
+    const b    = samples[idx+1] ?? 0;
+    out[i]     = a + frac * (b - a);
+  }
+  return out;
+}
+
+function buildWav(samples, sampleRate) {
+  // Convert Float32 → Int16 PCM
+  const pcm = new Int16Array(samples.length);
+  for (let i = 0; i < samples.length; i++) {
+    const v = Math.max(-1, Math.min(1, samples[i]));
+    pcm[i]  = v < 0 ? v * 0x8000 : v * 0x7fff;
   }
 
-  // ── Timer ─────────────────────────────────────────────────────────────────
-  const fmt = s => [Math.floor(s/3600), Math.floor((s%3600)/60), s%60]
-    .map(n=>String(n).padStart(2,'0')).join(':');
+  const buf  = new ArrayBuffer(44 + pcm.byteLength);
+  const dv   = new DataView(buf);
+  const wstr = (o, s) => { for (let i = 0; i < s.length; i++) dv.setUint8(o+i, s.charCodeAt(i)); };
 
-  function startTimers() {
-    timerInterval = setInterval(() => {
-      totalSeconds++; chunkSeconds++;
-      timerEl.textContent = fmt(totalSeconds);
-      chunkBar.style.width = (chunkSeconds/60*100)+'%';
-      chunkLabel.textContent = `${chunkSeconds}s / 60s`;
-    }, 1000);
-  }
-  function stopTimers() { clearInterval(timerInterval); timerInterval = null; }
+  wstr(0,  'RIFF');
+  dv.setUint32( 4, 36 + pcm.byteLength, true);
+  wstr(8,  'WAVE');
+  wstr(12, 'fmt ');
+  dv.setUint32(16, 16,           true);
+  dv.setUint16(20, 1,            true); // PCM
+  dv.setUint16(22, 1,            true); // mono
+  dv.setUint32(24, sampleRate,   true);
+  dv.setUint32(28, sampleRate*2, true); // byte rate (16-bit mono)
+  dv.setUint16(32, 2,            true); // block align
+  dv.setUint16(34, 16,           true); // bits per sample
+  wstr(36, 'data');
+  dv.setUint32(40, pcm.byteLength, true);
+  new Int16Array(buf, 44).set(pcm);
 
-  // ── Status ────────────────────────────────────────────────────────────────
-  function setStatus(s) {
-    statusBadge.className = 'status-badge';
-    statusDot.className   = 'status-dot';
-    const map = {
-      recording:    ['rec',          'blink', 'Recording',    true],
-      paused:       ['paused',       '',      'Paused',       false],
-      transcribing: ['transcribing', 'blink', 'Transcribing', false],
-      idle:         ['idle',         '',      'Idle',         false],
-    };
-    const [badge, dot, label, timer] = map[s] || map.idle;
-    statusBadge.classList.add(badge);
-    if (dot) statusDot.classList.add(dot);
-    statusText.textContent = label;
-    timerEl.classList.toggle('recording', timer);
-  }
+  return new Blob([buf], { type: 'audio/wav' });
+}
 
-  // ── WAV encoder ───────────────────────────────────────────────────────────
-  // MediaRecorder produces audio/webm or audio/ogg — Whisper rejects these.
-  // Solution: decode with Web Audio API, then re-encode as 16-bit mono PCM WAV.
-  async function toWav(blob) {
-    const arrayBuf  = await blob.arrayBuffer();
-    const decodeCtx = new AudioContext();
-    let audioBuf;
-    try {
-      audioBuf = await decodeCtx.decodeAudioData(arrayBuf);
-    } finally {
-      decodeCtx.close();
-    }
+// ── Collect & flush PCM chunk ─────────────────────────────────────────────
+function flushChunk() {
+  // Snapshot and immediately reset so new audio goes into a fresh buffer
+  const segments = pcmSegments;
+  pcmSegments = [];
 
-    const sr      = audioBuf.sampleRate;
-    const samples = audioBuf.getChannelData(0); // mono
+  if (!segments.length) return;
 
-    // Float32 → Int16 PCM
-    const pcm = new Int16Array(samples.length);
-    for (let i = 0; i < samples.length; i++) {
-      const v = Math.max(-1, Math.min(1, samples[i]));
-      pcm[i]  = v < 0 ? v * 0x8000 : v * 0x7fff;
-    }
+  // Merge all segments into one contiguous Float32Array
+  const totalLen = segments.reduce((n, s) => n + s.length, 0);
+  const merged   = new Float32Array(totalLen);
+  let offset = 0;
+  for (const seg of segments) { merged.set(seg, offset); offset += seg.length; }
 
-    // WAV header (44 bytes) + PCM data
-    const buf  = new ArrayBuffer(44 + pcm.byteLength);
-    const dv   = new DataView(buf);
-    const wstr = (o, s) => { for (let i=0;i<s.length;i++) dv.setUint8(o+i, s.charCodeAt(i)); };
+  // Need at least ~2 seconds of audio to be worth sending
+  if (totalLen < nativeSR * 2) return;
 
-    wstr(0,  'RIFF');
-    dv.setUint32( 4, 36 + pcm.byteLength, true);
-    wstr(8,  'WAVE');
-    wstr(12, 'fmt ');
-    dv.setUint32(16, 16,    true); // PCM chunk size
-    dv.setUint16(20, 1,     true); // PCM format
-    dv.setUint16(22, 1,     true); // mono
-    dv.setUint32(24, sr,    true); // sample rate
-    dv.setUint32(28, sr*2,  true); // byte rate (16-bit mono)
-    dv.setUint16(32, 2,     true); // block align
-    dv.setUint16(34, 16,    true); // bits per sample
-    wstr(36, 'data');
-    dv.setUint32(40, pcm.byteLength, true);
-    new Int16Array(buf, 44).set(pcm);
+  transcribeFloat32(merged);
+}
 
-    return new Blob([buf], { type: 'audio/wav' });
-  }
+// ── Transcribe ────────────────────────────────────────────────────────────
+async function transcribeFloat32(rawSamples) {
+  pendingChunks++;
+  processingRow.classList.add('show');
+  setStatus('transcribing');
 
-  // ── Transcription ─────────────────────────────────────────────────────────
-  async function transcribeBlob(rawBlob) {
-    if (!rawBlob || rawBlob.size < 5000) return;
-    pendingChunks++;
-    processingRow.classList.add('show');
-    setStatus('transcribing');
+  try {
+    // Downsample to 16 kHz for Whisper
+    const samples16k = downsampleTo16k(rawSamples, nativeSR);
+    const wavBlob    = buildWav(samples16k, 16000);
 
-    try {
-      processingTxt.textContent = 'Converting audio to WAV...';
-      const wavBlob = await toWav(rawBlob);
+    // WAV blob → base64 data URL (Puter.js accepts this)
+    const dataUrl = await new Promise((res, rej) => {
+      const reader  = new FileReader();
+      reader.onload  = () => res(reader.result);
+      reader.onerror = () => rej(reader.error);
+      reader.readAsDataURL(wavBlob);
+    });
 
-      processingTxt.textContent = 'Sending to Whisper...';
-      const dataUrl = await new Promise((res, rej) => {
-        const r = new FileReader();
-        r.onload = () => res(r.result);
-        r.onerror = () => rej(r.error);
-        r.readAsDataURL(wavBlob);
-      });
+    // Send to Whisper — NO language hint, let it auto-detect per chunk
+    // This correctly handles English, Hindi, or mixed speech
+    const result = await puter.ai.speech2txt({
+      file: dataUrl,
+      model: 'whisper-1',
+      // No 'language' param → Whisper auto-detects each chunk independently
+      prompt: 'This is a lecture. It may be in English, Hindi, or a mix of both.',
+    });
 
-      const result = await puter.ai.speech2txt({
-        file: dataUrl,
-        model: 'whisper-1',
-        language: 'hi',
-        prompt: 'This is a class lecture in Hindi, English, or a mix of both (Hinglish). Preserve the original language as spoken.',
-      });
-
-      const text = typeof result === 'string' ? result : (result?.text ?? '');
-      if (text.trim()) {
-        transcript.value += (transcript.value ? '\n\n' : '') + text.trim();
-        transcript.scrollTop = transcript.scrollHeight;
-      }
-
-    } catch (err) {
-      console.error('Transcription error:', err);
-      let detail = 'Unknown — check DevTools console (F12)';
-      if (typeof err === 'string')  detail = err;
-      else if (err?.message)        detail = err.message;
-      else { try { detail = JSON.stringify(err); } catch {} }
-      transcript.value += (transcript.value ? '\n\n' : '') + `[Error: ${detail}]`;
+    const text = typeof result === 'string' ? result : (result?.text ?? '');
+    if (text.trim()) {
+      transcript.value += (transcript.value ? '\n\n' : '') + text.trim();
       transcript.scrollTop = transcript.scrollHeight;
-
-    } finally {
-      pendingChunks--;
-      if (pendingChunks === 0) {
-        processingTxt.textContent = 'Converting & transcribing...';
-        processingRow.classList.remove('show');
-        if      (state === 'recording') setStatus('recording');
-        else if (state === 'paused')    setStatus('paused');
-        else                            setStatus('idle');
-      }
-    }
-  }
-
-  function flushChunk() {
-    if (!chunks.length) return;
-    const blob = new Blob(chunks, { type: mediaRecorder.mimeType || 'audio/webm' });
-    chunks = []; chunkSeconds = 0;
-    chunkBar.style.width = '0%'; chunkLabel.textContent = '0s / 60s';
-    transcribeBlob(blob);
-  }
-
-  // ── Recording ─────────────────────────────────────────────────────────────
-  async function startRecording() {
-    try {
-      audioStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-    } catch {
-      alert('Microphone access denied. Please allow microphone access and try again.');
-      return;
     }
 
-    audioCtx = new AudioContext();
-    const src = audioCtx.createMediaStreamSource(audioStream);
-    analyser = audioCtx.createAnalyser();
-    analyser.fftSize = 2048;
-    src.connect(analyser);
+  } catch (err) {
+    console.error('Transcription error:', err);
+    let detail = 'Unknown — open DevTools (F12) for details';
+    if (typeof err === 'string')   detail = err;
+    else if (err?.message)         detail = err.message;
+    else { try { detail = JSON.stringify(err); } catch {} }
+    transcript.value += (transcript.value ? '\n\n' : '') + `[Error: ${detail}]`;
+    transcript.scrollTop = transcript.scrollHeight;
 
-    // Pick the best supported container format
-    const mime = ['audio/mp4','audio/ogg;codecs=opus','audio/webm;codecs=opus','audio/webm']
-      .find(t => MediaRecorder.isTypeSupported(t)) || '';
+  } finally {
+    pendingChunks--;
+    if (pendingChunks === 0) {
+      processingRow.classList.remove('show');
+      // Restore correct status after transcription
+      if      (recording && !paused) setStatus('recording');
+      else if (paused)               setStatus('paused');
+      else                           setStatus('idle');
+    }
+  }
+}
 
-    mediaRecorder = new MediaRecorder(audioStream, mime ? { mimeType: mime } : {});
-    mediaRecorder.ondataavailable = e => { if (e.data?.size > 0) chunks.push(e.data); };
-    mediaRecorder.start(1000);
-
-    chunkInterval = setInterval(flushChunk, CHUNK_MS);
-    state = 'recording'; setStatus('recording');
-    idleLabel.style.display = 'none';
-    startTimers(); drawWave();
-    btnStart.disabled = true; btnPause.disabled = false; btnStop.disabled = false;
+// ── Start recording ───────────────────────────────────────────────────────
+async function startRecording() {
+  try {
+    audioStream = await navigator.mediaDevices.getUserMedia({
+      audio: { channelCount: 1, echoCancellation: true, noiseSuppression: true },
+      video: false
+    });
+  } catch (e) {
+    alert('Microphone access denied. Please allow microphone access and try again.');
+    return;
   }
 
-  function pauseRecording() {
-    if (state !== 'recording') return;
-    mediaRecorder.pause(); stopTimers();
-    cancelAnimationFrame(animFrameId); animFrameId = null;
-    state = 'paused'; setStatus('paused');
-    btnPause.textContent = '▶ Resume';
-  }
+  // Single AudioContext lives for the whole session
+  audioCtx   = new AudioContext();
+  nativeSR   = audioCtx.sampleRate; // typically 44100 or 48000
 
-  function resumeRecording() {
-    if (state !== 'paused') return;
-    mediaRecorder.resume(); startTimers(); drawWave();
-    state = 'recording'; setStatus('recording');
-    btnPause.textContent = '⏸ Pause';
-  }
+  micSource  = audioCtx.createMediaStreamSource(audioStream);
 
-  async function stopRecording() {
-    if (state === 'idle') return;
-    clearInterval(chunkInterval); chunkInterval = null;
-    stopTimers();
-    cancelAnimationFrame(animFrameId); animFrameId = null;
+  // Analyser for waveform visualisation only
+  analyserNode = audioCtx.createAnalyser();
+  analyserNode.fftSize = 2048;
+  micSource.connect(analyserNode);
 
-    await new Promise(resolve => { mediaRecorder.onstop = resolve; mediaRecorder.stop(); });
-    flushChunk();
+  // ScriptProcessorNode → raw PCM Float32 buffers, no encoding/decoding needed
+  processor = audioCtx.createScriptProcessor(BUFFER_SIZE, 1, 1);
+  processor.onaudioprocess = (e) => {
+    if (!recording || paused) return;
+    // Must clone — the buffer is reused by the browser after the callback
+    pcmSegments.push(new Float32Array(e.inputBuffer.getChannelData(0)));
+  };
+  micSource.connect(processor);
+  processor.connect(audioCtx.destination); // must connect to run
 
-    audioStream.getTracks().forEach(t => t.stop());
-    if (audioCtx) { audioCtx.close(); audioCtx = null; }
-    analyser = null;
+  recording    = true;
+  paused       = false;
+  pcmSegments  = [];
+  totalSeconds = 0;
+  chunkSeconds = 0;
 
-    state = 'stopped'; setStatus('idle'); drawIdle();
-    idleLabel.style.display = '';
-    chunkBar.style.width = '0%'; chunkLabel.textContent = '0s / 60s';
-    btnStart.disabled = false; btnPause.disabled = true; btnStop.disabled = true;
-    btnPause.textContent = '⏸ Pause';
-  }
+  setStatus('recording');
+  idleLabel.style.display = 'none';
+  startTimers();
+  drawWave();
 
-  // ── Button events ─────────────────────────────────────────────────────────
-  btnStart.addEventListener('click', () => {
-    totalSeconds = 0; chunkSeconds = 0; timerEl.textContent = '00:00:00';
-    startRecording();
-  });
-  btnPause.addEventListener('click', () => {
-    if (state === 'recording') pauseRecording();
-    else if (state === 'paused') resumeRecording();
-  });
-  btnStop.addEventListener('click', stopRecording);
+  btnStart.disabled = true;
+  btnPause.disabled = false;
+  btnStop.disabled  = false;
+}
 
-  btnCopy.addEventListener('click', async () => {
-    if (!transcript.value) return;
-    try { await navigator.clipboard.writeText(transcript.value); }
-    catch { transcript.select(); document.execCommand('copy'); }
-    btnCopy.textContent = '✓ Copied!'; btnCopy.classList.add('copied');
-    setTimeout(() => { btnCopy.textContent = '⎘ Copy'; btnCopy.classList.remove('copied'); }, 2000);
-  });
+// ── Pause / Resume ────────────────────────────────────────────────────────
+function pauseRecording() {
+  if (!recording || paused) return;
+  paused = true;
+  setStatus('paused');
+  btnPause.textContent = '▶ Resume';
+}
 
-  btnClear.addEventListener('click', () => {
-    if (transcript.value && confirm('Clear the transcript? This cannot be undone.'))
-      transcript.value = '';
-  });
+function resumeRecording() {
+  if (!paused) return;
+  paused = false;
+  setStatus('recording');
+  btnPause.textContent = '⏸ Pause';
+}
+
+// ── Stop recording ────────────────────────────────────────────────────────
+function stopRecording() {
+  if (!recording) return;
+
+  recording = false;
+  paused    = false;
+
+  stopTimers();
+  cancelAnimationFrame(animFrameId);
+  animFrameId = null;
+
+  // Send whatever PCM is left in the current chunk
+  flushChunk();
+
+  // Tear down audio graph
+  try { processor.disconnect();    processor.onaudioprocess = null; } catch {}
+  try { micSource.disconnect();  } catch {}
+  try { analyserNode.disconnect(); } catch {}
+  try { audioCtx.close();        } catch {}
+  try { audioStream.getTracks().forEach(t => t.stop()); } catch {}
+
+  processor    = null;
+  micSource    = null;
+  analyserNode = null;
+  audioCtx     = null;
+  audioStream  = null;
+
+  setStatus('idle');
+  drawIdle();
+  idleLabel.style.display = '';
+  chunkBar.style.width    = '0%';
+  chunkLabel.textContent  = `0s / ${CHUNK_SECONDS}s`;
+
+  btnStart.disabled    = false;
+  btnPause.disabled    = true;
+  btnStop.disabled     = true;
+  btnPause.textContent = '⏸ Pause';
+}
+
+// ── Button events ─────────────────────────────────────────────────────────
+btnStart.addEventListener('click', () => {
+  timerEl.textContent = '00:00:00';
+  startRecording();
+});
+btnPause.addEventListener('click', () => {
+  if (!paused) pauseRecording();
+  else         resumeRecording();
+});
+btnStop.addEventListener('click', stopRecording);
+
+btnCopy.addEventListener('click', async () => {
+  if (!transcript.value) return;
+  try { await navigator.clipboard.writeText(transcript.value); }
+  catch { transcript.select(); document.execCommand('copy'); }
+  btnCopy.textContent = '✓ Copied!';
+  btnCopy.classList.add('copied');
+  setTimeout(() => { btnCopy.textContent = '⎘ Copy'; btnCopy.classList.remove('copied'); }, 2000);
+});
+
+btnClear.addEventListener('click', () => {
+  if (transcript.value && confirm('Clear the transcript? This cannot be undone.'))
+    transcript.value = '';
+});
 </script>
 </body>
 </html>
