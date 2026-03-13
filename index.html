@@ -18,7 +18,6 @@
       --accent2: #e05c2a;
       --text: #e8e9f0;
       --muted: #6b6f82;
-      --danger: #e05c2a;
       --green: #3ecf8e;
       --red: #e05c2a;
     }
@@ -34,7 +33,6 @@
       padding: 40px 20px 60px;
     }
 
-    /* Subtle grid bg */
     body::before {
       content: '';
       position: fixed;
@@ -52,13 +50,10 @@
       z-index: 1;
       width: 100%;
       max-width: 780px;
+      animation: fadeIn 0.5s ease;
     }
 
-    /* Header */
-    header {
-      margin-bottom: 40px;
-      text-align: center;
-    }
+    header { margin-bottom: 40px; text-align: center; }
 
     .logo-badge {
       display: inline-flex;
@@ -97,13 +92,8 @@
       background-clip: text;
     }
 
-    .subtitle {
-      margin-top: 10px;
-      color: var(--muted);
-      font-size: 14px;
-    }
+    .subtitle { margin-top: 10px; color: var(--muted); font-size: 14px; }
 
-    /* Recorder card */
     .recorder-card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -112,7 +102,6 @@
       margin-bottom: 20px;
     }
 
-    /* Waveform visualizer */
     .visualizer-wrap {
       height: 64px;
       background: var(--surface2);
@@ -126,11 +115,7 @@
       justify-content: center;
     }
 
-    canvas#waveform {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
+    canvas#waveform { width: 100%; height: 100%; display: block; }
 
     .visualizer-idle {
       position: absolute;
@@ -140,7 +125,6 @@
       pointer-events: none;
     }
 
-    /* Timer */
     .timer-row {
       display: flex;
       align-items: center;
@@ -172,23 +156,15 @@
       transition: all 0.3s;
     }
 
-    .status-badge.idle    { border-color: var(--border); color: var(--muted); }
-    .status-badge.rec     { border-color: var(--accent); color: var(--accent); }
-    .status-badge.paused  { border-color: #a0a0c0; color: #a0a0c0; }
+    .status-badge.idle         { border-color: var(--border); color: var(--muted); }
+    .status-badge.rec          { border-color: var(--accent); color: var(--accent); }
+    .status-badge.paused       { border-color: #a0a0c0; color: #a0a0c0; }
     .status-badge.transcribing { border-color: var(--green); color: var(--green); }
 
-    .status-dot {
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: currentColor;
-    }
-
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
     .status-dot.blink { animation: pulse 1.2s infinite; }
 
-    /* Chunk progress */
-    .chunk-bar-wrap {
-      margin-bottom: 24px;
-    }
+    .chunk-bar-wrap { margin-bottom: 24px; }
 
     .chunk-label {
       font-size: 12px;
@@ -198,12 +174,7 @@
       justify-content: space-between;
     }
 
-    .chunk-bar-bg {
-      height: 4px;
-      border-radius: 99px;
-      background: var(--surface2);
-      overflow: hidden;
-    }
+    .chunk-bar-bg { height: 4px; border-radius: 99px; background: var(--surface2); overflow: hidden; }
 
     .chunk-bar-fill {
       height: 100%;
@@ -213,11 +184,7 @@
       transition: width 0.4s linear;
     }
 
-    /* Buttons */
-    .btn-row {
-      display: flex;
-      gap: 12px;
-    }
+    .btn-row { display: flex; gap: 12px; }
 
     .btn {
       flex: 1;
@@ -247,11 +214,9 @@
       flex: 2;
     }
     .btn-start:not(:disabled):hover { filter: brightness(1.12); transform: translateY(-1px); }
+    .btn-pause:not(:disabled):hover { border-color: #a0a0c0; color: #e0e0f0; }
+    .btn-stop:not(:disabled):hover  { border-color: var(--red); color: var(--red); }
 
-    .btn-pause:not(:disabled):hover  { border-color: #a0a0c0; color: #e0e0f0; }
-    .btn-stop:not(:disabled):hover   { border-color: var(--red); color: var(--red); }
-
-    /* Transcript area */
     .transcript-card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -276,10 +241,7 @@
       color: var(--muted);
     }
 
-    .transcript-actions {
-      display: flex;
-      gap: 8px;
-    }
+    .transcript-actions { display: flex; gap: 8px; }
 
     .icon-btn {
       background: var(--surface2);
@@ -298,9 +260,8 @@
       letter-spacing: 0.04em;
     }
 
-    .icon-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-    .icon-btn.copied { border-color: var(--green); color: var(--green); }
+    .icon-btn:hover  { border-color: var(--accent); color: var(--accent); }
+    .icon-btn.copied { border-color: var(--green);  color: var(--green); }
 
     #transcript {
       width: 100%;
@@ -320,7 +281,6 @@
 
     #transcript::placeholder { color: var(--muted); }
 
-    /* Transcribing indicator */
     .processing-row {
       padding: 10px 24px;
       border-top: 1px solid var(--border);
@@ -339,46 +299,25 @@
       border-top-color: transparent;
       border-radius: 50%;
       animation: spin 0.7s linear infinite;
+      flex-shrink: 0;
     }
 
-    /* Footer */
-    footer {
-      text-align: center;
-      margin-top: 32px;
-      font-size: 12px;
-      color: var(--muted);
-    }
+    footer { text-align: center; margin-top: 32px; font-size: 12px; color: var(--muted); }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .container { animation: fadeIn 0.5s ease; }
+    @keyframes pulse  { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+    @keyframes spin   { to { transform: rotate(360deg); } }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body>
 <div class="container">
 
   <header>
-    <div class="logo-badge">
-      <span class="logo-dot"></span>
-      Powered by Puter.js · Whisper
-    </div>
+    <div class="logo-badge"><span class="logo-dot"></span>Powered by Puter.js · Whisper</div>
     <h1>Class <span>Transcriber</span></h1>
     <p class="subtitle">Hindi · English · Hinglish &nbsp;—&nbsp; Up to 3 hours per session</p>
   </header>
 
-  <!-- Recorder -->
   <div class="recorder-card">
     <div class="visualizer-wrap">
       <canvas id="waveform"></canvas>
@@ -398,25 +337,16 @@
         <span>Chunk progress (1 min → transcribe)</span>
         <span id="chunkLabel">0s / 60s</span>
       </div>
-      <div class="chunk-bar-bg">
-        <div class="chunk-bar-fill" id="chunkBar"></div>
-      </div>
+      <div class="chunk-bar-bg"><div class="chunk-bar-fill" id="chunkBar"></div></div>
     </div>
 
     <div class="btn-row">
-      <button class="btn btn-start" id="btnStart">
-        ▶ Start
-      </button>
-      <button class="btn btn-pause" id="btnPause" disabled>
-        ⏸ Pause
-      </button>
-      <button class="btn btn-stop" id="btnStop" disabled>
-        ⏹ Stop
-      </button>
+      <button class="btn btn-start" id="btnStart">▶ Start</button>
+      <button class="btn btn-pause" id="btnPause" disabled>⏸ Pause</button>
+      <button class="btn btn-stop"  id="btnStop"  disabled>⏹ Stop</button>
     </div>
   </div>
 
-  <!-- Transcript -->
   <div class="transcript-card">
     <div class="transcript-header">
       <span class="transcript-title">Transcript</span>
@@ -425,58 +355,48 @@
         <button class="icon-btn" id="btnCopy">⎘ Copy</button>
       </div>
     </div>
-    <textarea id="transcript" placeholder="Transcript will appear here as you record...&#10;&#10;Recording in 1-minute chunks. Each chunk is automatically sent for transcription once complete."></textarea>
+    <textarea id="transcript" placeholder="Transcript will appear here as you record...&#10;&#10;Mic audio is recorded in 1-minute chunks, converted to WAV, then sent to Whisper."></textarea>
     <div class="processing-row" id="processingRow">
       <span class="spin"></span>
-      Transcribing last chunk...
+      <span id="processingTxt">Converting &amp; transcribing...</span>
     </div>
   </div>
 
-  <footer>
-    All processing happens in your browser via Puter.js · No data stored
-  </footer>
+  <footer>All processing happens in your browser via Puter.js · No data stored</footer>
 
 </div>
-
 <script>
-  // ── DOM refs ──────────────────────────────────────────────────────────────
-  const btnStart   = document.getElementById('btnStart');
-  const btnPause   = document.getElementById('btnPause');
-  const btnStop    = document.getElementById('btnStop');
-  const btnCopy    = document.getElementById('btnCopy');
-  const btnClear   = document.getElementById('btnClear');
-  const timerEl    = document.getElementById('timer');
-  const statusBadge= document.getElementById('statusBadge');
-  const statusDot  = document.getElementById('statusDot');
-  const statusText = document.getElementById('statusText');
-  const chunkBar   = document.getElementById('chunkBar');
-  const chunkLabel = document.getElementById('chunkLabel');
-  const transcript = document.getElementById('transcript');
+  // ── DOM ───────────────────────────────────────────────────────────────────
+  const btnStart      = document.getElementById('btnStart');
+  const btnPause      = document.getElementById('btnPause');
+  const btnStop       = document.getElementById('btnStop');
+  const btnCopy       = document.getElementById('btnCopy');
+  const btnClear      = document.getElementById('btnClear');
+  const timerEl       = document.getElementById('timer');
+  const statusBadge   = document.getElementById('statusBadge');
+  const statusDot     = document.getElementById('statusDot');
+  const statusText    = document.getElementById('statusText');
+  const chunkBar      = document.getElementById('chunkBar');
+  const chunkLabel    = document.getElementById('chunkLabel');
+  const transcript    = document.getElementById('transcript');
   const processingRow = document.getElementById('processingRow');
-  const idleLabel  = document.getElementById('idleLabel');
-  const canvas     = document.getElementById('waveform');
-  const ctx2d      = canvas.getContext('2d');
+  const processingTxt = document.getElementById('processingTxt');
+  const idleLabel     = document.getElementById('idleLabel');
+  const canvas        = document.getElementById('waveform');
+  const ctx2d         = canvas.getContext('2d');
 
-  // ── State ─────────────────────────────────────────────────────────────────
-  const CHUNK_DURATION_MS = 60_000; // 1 minute
-  let state = 'idle'; // idle | recording | paused | stopped
-  let mediaRecorder = null;
-  let audioStream   = null;
-  let audioCtx      = null;
-  let analyser      = null;
-  let animFrameId   = null;
-  let chunks        = [];       // audio blobs for current chunk
-  let totalSeconds  = 0;
-  let chunkSeconds  = 0;
-  let timerInterval = null;
-  let chunkInterval = null;
-  let pendingChunks = 0;        // transcription requests in-flight
+  const CHUNK_MS = 60_000;
+
+  let state = 'idle', mediaRecorder = null, audioStream = null;
+  let audioCtx = null, analyser = null, animFrameId = null;
+  let chunks = [], totalSeconds = 0, chunkSeconds = 0;
+  let timerInterval = null, chunkInterval = null, pendingChunks = 0;
 
   // ── Waveform ──────────────────────────────────────────────────────────────
   function resizeCanvas() {
-    canvas.width  = canvas.offsetWidth  * window.devicePixelRatio;
-    canvas.height = canvas.offsetHeight * window.devicePixelRatio;
-    ctx2d.scale(window.devicePixelRatio, window.devicePixelRatio);
+    canvas.width  = canvas.offsetWidth  * devicePixelRatio;
+    canvas.height = canvas.offsetHeight * devicePixelRatio;
+    ctx2d.scale(devicePixelRatio, devicePixelRatio);
   }
   resizeCanvas();
   window.addEventListener('resize', resizeCanvas);
@@ -484,273 +404,257 @@
   function drawIdle() {
     const W = canvas.offsetWidth, H = canvas.offsetHeight;
     ctx2d.clearRect(0, 0, W, H);
-    ctx2d.strokeStyle = '#2a2d3a';
-    ctx2d.lineWidth = 1.5;
-    ctx2d.beginPath();
-    ctx2d.moveTo(0, H/2);
-    ctx2d.lineTo(W, H/2);
-    ctx2d.stroke();
+    ctx2d.strokeStyle = '#2a2d3a'; ctx2d.lineWidth = 1.5;
+    ctx2d.beginPath(); ctx2d.moveTo(0, H/2); ctx2d.lineTo(W, H/2); ctx2d.stroke();
   }
   drawIdle();
 
   function drawWave() {
     if (!analyser) return;
     animFrameId = requestAnimationFrame(drawWave);
-    const bufLen = analyser.frequencyBinCount;
-    const dataArr = new Uint8Array(bufLen);
-    analyser.getByteTimeDomainData(dataArr);
-
+    const buf = new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteTimeDomainData(buf);
     const W = canvas.offsetWidth, H = canvas.offsetHeight;
     ctx2d.clearRect(0, 0, W, H);
-
-    // gradient line
-    const grad = ctx2d.createLinearGradient(0, 0, W, 0);
-    grad.addColorStop(0,   '#f0a500');
-    grad.addColorStop(0.5, '#e05c2a');
-    grad.addColorStop(1,   '#f0a500');
-
+    const g = ctx2d.createLinearGradient(0,0,W,0);
+    g.addColorStop(0,'#f0a500'); g.addColorStop(.5,'#e05c2a'); g.addColorStop(1,'#f0a500');
     ctx2d.lineWidth = 2;
-    ctx2d.strokeStyle = state === 'paused' ? '#6b6f82' : grad;
+    ctx2d.strokeStyle = state === 'paused' ? '#6b6f82' : g;
     ctx2d.beginPath();
-    const sliceW = W / bufLen;
-    let x = 0;
-    for (let i = 0; i < bufLen; i++) {
-      const v = dataArr[i] / 128.0;
-      const y = (v * H) / 2;
-      i === 0 ? ctx2d.moveTo(x, y) : ctx2d.lineTo(x, y);
-      x += sliceW;
+    const sw = W / buf.length; let x = 0;
+    for (let i = 0; i < buf.length; i++) {
+      const y = (buf[i]/128)*H/2;
+      i===0 ? ctx2d.moveTo(x,y) : ctx2d.lineTo(x,y);
+      x += sw;
     }
     ctx2d.stroke();
   }
 
   // ── Timer ─────────────────────────────────────────────────────────────────
-  function fmtTime(s) {
-    const h = Math.floor(s / 3600);
-    const m = Math.floor((s % 3600) / 60);
-    const ss = s % 60;
-    return [h, m, ss].map(n => String(n).padStart(2, '0')).join(':');
-  }
+  const fmt = s => [Math.floor(s/3600), Math.floor((s%3600)/60), s%60]
+    .map(n=>String(n).padStart(2,'0')).join(':');
 
   function startTimers() {
     timerInterval = setInterval(() => {
-      totalSeconds++;
-      chunkSeconds++;
-      timerEl.textContent = fmtTime(totalSeconds);
-      const pct = (chunkSeconds / 60) * 100;
-      chunkBar.style.width = pct + '%';
+      totalSeconds++; chunkSeconds++;
+      timerEl.textContent = fmt(totalSeconds);
+      chunkBar.style.width = (chunkSeconds/60*100)+'%';
       chunkLabel.textContent = `${chunkSeconds}s / 60s`;
     }, 1000);
   }
+  function stopTimers() { clearInterval(timerInterval); timerInterval = null; }
 
-  function stopTimers() {
-    clearInterval(timerInterval);
-    timerInterval = null;
-  }
-
-  // ── Status UI ─────────────────────────────────────────────────────────────
+  // ── Status ────────────────────────────────────────────────────────────────
   function setStatus(s) {
     statusBadge.className = 'status-badge';
-    statusDot.className = 'status-dot';
-    if (s === 'recording') {
-      statusBadge.classList.add('rec');
-      statusDot.classList.add('blink');
-      statusText.textContent = 'Recording';
-      timerEl.classList.add('recording');
-    } else if (s === 'paused') {
-      statusBadge.classList.add('paused');
-      statusText.textContent = 'Paused';
-      timerEl.classList.remove('recording');
-    } else if (s === 'transcribing') {
-      statusBadge.classList.add('transcribing');
-      statusDot.classList.add('blink');
-      statusText.textContent = 'Transcribing';
-    } else {
-      statusBadge.classList.add('idle');
-      statusText.textContent = 'Idle';
-      timerEl.classList.remove('recording');
+    statusDot.className   = 'status-dot';
+    const map = {
+      recording:    ['rec',          'blink', 'Recording',    true],
+      paused:       ['paused',       '',      'Paused',       false],
+      transcribing: ['transcribing', 'blink', 'Transcribing', false],
+      idle:         ['idle',         '',      'Idle',         false],
+    };
+    const [badge, dot, label, timer] = map[s] || map.idle;
+    statusBadge.classList.add(badge);
+    if (dot) statusDot.classList.add(dot);
+    statusText.textContent = label;
+    timerEl.classList.toggle('recording', timer);
+  }
+
+  // ── WAV encoder ───────────────────────────────────────────────────────────
+  // MediaRecorder produces audio/webm or audio/ogg — Whisper rejects these.
+  // Solution: decode with Web Audio API, then re-encode as 16-bit mono PCM WAV.
+  async function toWav(blob) {
+    const arrayBuf  = await blob.arrayBuffer();
+    const decodeCtx = new AudioContext();
+    let audioBuf;
+    try {
+      audioBuf = await decodeCtx.decodeAudioData(arrayBuf);
+    } finally {
+      decodeCtx.close();
     }
+
+    const sr      = audioBuf.sampleRate;
+    const samples = audioBuf.getChannelData(0); // mono
+
+    // Float32 → Int16 PCM
+    const pcm = new Int16Array(samples.length);
+    for (let i = 0; i < samples.length; i++) {
+      const v = Math.max(-1, Math.min(1, samples[i]));
+      pcm[i]  = v < 0 ? v * 0x8000 : v * 0x7fff;
+    }
+
+    // WAV header (44 bytes) + PCM data
+    const buf  = new ArrayBuffer(44 + pcm.byteLength);
+    const dv   = new DataView(buf);
+    const wstr = (o, s) => { for (let i=0;i<s.length;i++) dv.setUint8(o+i, s.charCodeAt(i)); };
+
+    wstr(0,  'RIFF');
+    dv.setUint32( 4, 36 + pcm.byteLength, true);
+    wstr(8,  'WAVE');
+    wstr(12, 'fmt ');
+    dv.setUint32(16, 16,    true); // PCM chunk size
+    dv.setUint16(20, 1,     true); // PCM format
+    dv.setUint16(22, 1,     true); // mono
+    dv.setUint32(24, sr,    true); // sample rate
+    dv.setUint32(28, sr*2,  true); // byte rate (16-bit mono)
+    dv.setUint16(32, 2,     true); // block align
+    dv.setUint16(34, 16,    true); // bits per sample
+    wstr(36, 'data');
+    dv.setUint32(40, pcm.byteLength, true);
+    new Int16Array(buf, 44).set(pcm);
+
+    return new Blob([buf], { type: 'audio/wav' });
   }
 
   // ── Transcription ─────────────────────────────────────────────────────────
-  async function transcribeBlob(blob) {
-    if (blob.size < 1000) return; // skip silence
+  async function transcribeBlob(rawBlob) {
+    if (!rawBlob || rawBlob.size < 5000) return;
     pendingChunks++;
     processingRow.classList.add('show');
     setStatus('transcribing');
 
     try {
+      processingTxt.textContent = 'Converting audio to WAV...';
+      const wavBlob = await toWav(rawBlob);
+
+      processingTxt.textContent = 'Sending to Whisper...';
+      const dataUrl = await new Promise((res, rej) => {
+        const r = new FileReader();
+        r.onload = () => res(r.result);
+        r.onerror = () => rej(r.error);
+        r.readAsDataURL(wavBlob);
+      });
+
       const result = await puter.ai.speech2txt({
-        file: blob,
+        file: dataUrl,
         model: 'whisper-1',
-        language: 'hi',   // Hints Whisper toward Hindi/Hinglish; still transcribes English correctly
+        language: 'hi',
         prompt: 'This is a class lecture in Hindi, English, or a mix of both (Hinglish). Preserve the original language as spoken.',
       });
-      const text = (result && (result.text || result)) || '';
-      if (text && text.trim()) {
-        const current = transcript.value;
-        transcript.value = current
-          ? current + '\n\n' + text.trim()
-          : text.trim();
+
+      const text = typeof result === 'string' ? result : (result?.text ?? '');
+      if (text.trim()) {
+        transcript.value += (transcript.value ? '\n\n' : '') + text.trim();
         transcript.scrollTop = transcript.scrollHeight;
       }
+
     } catch (err) {
       console.error('Transcription error:', err);
-      const errMsg = `[Transcription error: ${err.message || err}]`;
-      transcript.value += (transcript.value ? '\n\n' : '') + errMsg;
+      let detail = 'Unknown — check DevTools console (F12)';
+      if (typeof err === 'string')  detail = err;
+      else if (err?.message)        detail = err.message;
+      else { try { detail = JSON.stringify(err); } catch {} }
+      transcript.value += (transcript.value ? '\n\n' : '') + `[Error: ${detail}]`;
+      transcript.scrollTop = transcript.scrollHeight;
+
     } finally {
       pendingChunks--;
       if (pendingChunks === 0) {
+        processingTxt.textContent = 'Converting & transcribing...';
         processingRow.classList.remove('show');
-        if (state === 'recording') setStatus('recording');
-        else if (state === 'paused') setStatus('paused');
-        else setStatus('idle');
+        if      (state === 'recording') setStatus('recording');
+        else if (state === 'paused')    setStatus('paused');
+        else                            setStatus('idle');
       }
     }
   }
 
   function flushChunk() {
-    if (chunks.length === 0) return;
+    if (!chunks.length) return;
     const blob = new Blob(chunks, { type: mediaRecorder.mimeType || 'audio/webm' });
-    chunks = [];
-    chunkSeconds = 0;
-    chunkBar.style.width = '0%';
-    chunkLabel.textContent = '0s / 60s';
+    chunks = []; chunkSeconds = 0;
+    chunkBar.style.width = '0%'; chunkLabel.textContent = '0s / 60s';
     transcribeBlob(blob);
   }
 
-  // ── Recording controls ────────────────────────────────────────────────────
+  // ── Recording ─────────────────────────────────────────────────────────────
   async function startRecording() {
     try {
       audioStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-    } catch (e) {
+    } catch {
       alert('Microphone access denied. Please allow microphone access and try again.');
       return;
     }
 
-    // Audio analyser for waveform
     audioCtx = new AudioContext();
-    const source = audioCtx.createMediaStreamSource(audioStream);
+    const src = audioCtx.createMediaStreamSource(audioStream);
     analyser = audioCtx.createAnalyser();
     analyser.fftSize = 2048;
-    source.connect(analyser);
+    src.connect(analyser);
 
-    // MediaRecorder
-    mediaRecorder = new MediaRecorder(audioStream);
-    mediaRecorder.ondataavailable = e => {
-      if (e.data && e.data.size > 0) chunks.push(e.data);
-    };
+    // Pick the best supported container format
+    const mime = ['audio/mp4','audio/ogg;codecs=opus','audio/webm;codecs=opus','audio/webm']
+      .find(t => MediaRecorder.isTypeSupported(t)) || '';
 
-    // Start collecting data every second
+    mediaRecorder = new MediaRecorder(audioStream, mime ? { mimeType: mime } : {});
+    mediaRecorder.ondataavailable = e => { if (e.data?.size > 0) chunks.push(e.data); };
     mediaRecorder.start(1000);
 
-    // Chunk interval: every 60s, flush
-    chunkInterval = setInterval(flushChunk, CHUNK_DURATION_MS);
-
-    state = 'recording';
-    setStatus('recording');
+    chunkInterval = setInterval(flushChunk, CHUNK_MS);
+    state = 'recording'; setStatus('recording');
     idleLabel.style.display = 'none';
-    startTimers();
-    drawWave();
-
-    btnStart.disabled = true;
-    btnPause.disabled = false;
-    btnStop.disabled  = false;
+    startTimers(); drawWave();
+    btnStart.disabled = true; btnPause.disabled = false; btnStop.disabled = false;
   }
 
   function pauseRecording() {
     if (state !== 'recording') return;
-    mediaRecorder.pause();
-    stopTimers();
-    cancelAnimationFrame(animFrameId);
-    animFrameId = null;
-    state = 'paused';
-    setStatus('paused');
+    mediaRecorder.pause(); stopTimers();
+    cancelAnimationFrame(animFrameId); animFrameId = null;
+    state = 'paused'; setStatus('paused');
     btnPause.textContent = '▶ Resume';
   }
 
   function resumeRecording() {
     if (state !== 'paused') return;
-    mediaRecorder.resume();
-    startTimers();
-    drawWave();
-    state = 'recording';
-    setStatus('recording');
+    mediaRecorder.resume(); startTimers(); drawWave();
+    state = 'recording'; setStatus('recording');
     btnPause.textContent = '⏸ Pause';
   }
 
   async function stopRecording() {
     if (state === 'idle') return;
-
-    clearInterval(chunkInterval);
-    chunkInterval = null;
+    clearInterval(chunkInterval); chunkInterval = null;
     stopTimers();
-    cancelAnimationFrame(animFrameId);
-    animFrameId = null;
+    cancelAnimationFrame(animFrameId); animFrameId = null;
 
-    // Flush remaining audio
-    mediaRecorder.stop();
-
-    // Wait a tick for final ondataavailable
-    await new Promise(r => setTimeout(r, 300));
+    await new Promise(resolve => { mediaRecorder.onstop = resolve; mediaRecorder.stop(); });
     flushChunk();
 
     audioStream.getTracks().forEach(t => t.stop());
     if (audioCtx) { audioCtx.close(); audioCtx = null; }
     analyser = null;
 
-    state = 'stopped';
-    setStatus('idle');
-    drawIdle();
+    state = 'stopped'; setStatus('idle'); drawIdle();
     idleLabel.style.display = '';
-
-    chunkBar.style.width = '0%';
-    chunkLabel.textContent = '0s / 60s';
-
-    btnStart.disabled = false;
-    btnPause.disabled = true;
-    btnStop.disabled  = true;
+    chunkBar.style.width = '0%'; chunkLabel.textContent = '0s / 60s';
+    btnStart.disabled = false; btnPause.disabled = true; btnStop.disabled = true;
     btnPause.textContent = '⏸ Pause';
   }
 
   // ── Button events ─────────────────────────────────────────────────────────
   btnStart.addEventListener('click', () => {
-    totalSeconds = 0;
-    chunkSeconds = 0;
-    timerEl.textContent = '00:00:00';
+    totalSeconds = 0; chunkSeconds = 0; timerEl.textContent = '00:00:00';
     startRecording();
   });
-
   btnPause.addEventListener('click', () => {
     if (state === 'recording') pauseRecording();
     else if (state === 'paused') resumeRecording();
   });
-
   btnStop.addEventListener('click', stopRecording);
 
   btnCopy.addEventListener('click', async () => {
-    const text = transcript.value;
-    if (!text) return;
-    try {
-      await navigator.clipboard.writeText(text);
-      btnCopy.textContent = '✓ Copied!';
-      btnCopy.classList.add('copied');
-      setTimeout(() => {
-        btnCopy.textContent = '⎘ Copy';
-        btnCopy.classList.remove('copied');
-      }, 2000);
-    } catch (e) {
-      // Fallback
-      transcript.select();
-      document.execCommand('copy');
-      btnCopy.textContent = '✓ Copied!';
-      setTimeout(() => { btnCopy.textContent = '⎘ Copy'; }, 2000);
-    }
+    if (!transcript.value) return;
+    try { await navigator.clipboard.writeText(transcript.value); }
+    catch { transcript.select(); document.execCommand('copy'); }
+    btnCopy.textContent = '✓ Copied!'; btnCopy.classList.add('copied');
+    setTimeout(() => { btnCopy.textContent = '⎘ Copy'; btnCopy.classList.remove('copied'); }, 2000);
   });
 
   btnClear.addEventListener('click', () => {
-    if (transcript.value && confirm('Clear the transcript? This cannot be undone.')) {
+    if (transcript.value && confirm('Clear the transcript? This cannot be undone.'))
       transcript.value = '';
-    }
   });
 </script>
 </body>
